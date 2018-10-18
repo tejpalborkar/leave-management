@@ -135,7 +135,7 @@ pageContext.setAttribute("approvedAndRejected", approvedAndRejected);
    
 	    <div id="myprofile" class="tab-pane fade ">
 			 <form method="post" action="/LeaveManagmentProject/register-servlet">
-			 <input  type="hidden" value ="${loggedInUser.id}"  />
+			 <input  type="hidden" value ="${loggedInUser.id}" name="id" />
 				<div style="margin: 10px;">
 					<div class="row">
 			 			<label class="col-xs-2">First Name </label>

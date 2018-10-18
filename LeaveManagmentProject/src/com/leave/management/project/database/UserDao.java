@@ -178,8 +178,8 @@ public class UserDao {
 			Connection connection = DatabaseConnection.getConnection();
 			
 			
-			String query = "UPDATE user_details SET first_name ='" + emp.getFirstName() + "', last_name= '"	+ emp.getLastName() + "'"
-					+ "department='"+emp.getDepartmentId()+"',"
+			String query = "UPDATE user_details SET first_name ='" + emp.getFirstName() + "', last_name= '"	+ emp.getLastName() + "',"
+					+ "department='"+emp.getDepartmentId()+"'"
 					+ " where id ='" + emp.getId() + "'";
 			System.out.println(query);
 
@@ -188,7 +188,7 @@ public class UserDao {
 
 			System.out.println("Rows inserted: " + rowsAffected);
 
-			query = "UPDATE user_login SET user_name ='" + emp.getUserName() + "', password= '" + emp.getPassword()	+ "'";
+			query = "UPDATE user_login SET user_name ='" + emp.getUserName() + "', password= '" + emp.getPassword()	+ "' where id='"+emp.getId()+"'" ;
 			System.out.println(query);
 
 			stmt = connection.createStatement();

@@ -54,6 +54,7 @@
 		<ul class="nav nav-tabs" >
 			<li class="active" style="margin-left:5px;"><a data-toggle="tab" href="#users">Users</a></li>
 			<li><a data-toggle="tab" style="margin-left:5px;" href="#departments">Departments</a></li>
+			<li  style="margin-left:5px;"><a data-toggle="tab" href="#myprofile">My Profile</a></li>
 			<li style="float:right;margin-right: -115px;"><a  href="logout-servlet" style="margin-right:5px;">Logout</a></li>
 		</ul>
 
@@ -123,6 +124,10 @@
 		  </table>
 </div>
     </div>
+    
+     <div id="myprofile" class="tab-pane fade ">
+			    <jsp:include page="edit-user.jsp"></jsp:include> 
+	 	</div>
     </div>
 </div>
 </body>
@@ -243,12 +248,6 @@ input {
 	margin: .4rem;
 }
 
-label {
-	display: inline-block;
-	text-align: right;
-	width: 20%;
-}
-
 .welcome{
 	color: black;
 	text-align: right;
@@ -259,5 +258,13 @@ label {
 	margin-right: 95px;
 }
 </style>
+
+<script>
+	$(document).ready(function() {
+
+		$("#departmentId${loggedInUser.departmentId}").prop('selected', true);
+
+	});
+</script>
 
 </html>

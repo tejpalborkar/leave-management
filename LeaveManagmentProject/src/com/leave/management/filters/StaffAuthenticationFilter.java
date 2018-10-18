@@ -42,7 +42,7 @@ public class StaffAuthenticationFilter implements Filter {
 	public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain)
 			throws IOException, ServletException {
 		// pass the request along the filter chain
-		System.out.println("Executing filter");
+		System.out.println("Executing staff auth filter");
 		HttpServletRequest servletRequest = (HttpServletRequest) request;
 
 		HttpSession session = servletRequest.getSession();

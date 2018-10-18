@@ -101,7 +101,7 @@ public class UserDao {
 		try {
 
 			Connection connection = DatabaseConnection.getConnection();
-			String sqlQuery = "SELECT ul.id as user_id, ud.first_name, ud.last_name, ul.user_name, d.department_name, d.department_id, ul.role\r\n"
+			String sqlQuery = "SELECT ul.id as user_id, ud.first_name, ud.last_name, ul.user_name, ul.password, d.department_name, d.department_id, ul.role\r\n"
 					+ "  FROM user_detail ud JOIN user_login ul ON ud.user_id = ul.id\r\n"
 					+ "JOIN department d ON ud.department_id = d.department_id\r\n" + " where ul.role <> 'ADMIN' AND ud.is_deleted = 0";
 
@@ -128,6 +128,8 @@ public class UserDao {
 				Integer departmentId = resultset.getInt("department_id");
 				String departmentName = resultset.getString("department_name");
 				String role = resultset.getString("role");
+				String userName = resultset.getString("user_name");
+				String password = resultset.getString("password");
 				Integer userId = resultset.getInt("user_id");
 
 				User user = new User();
@@ -136,7 +138,8 @@ public class UserDao {
 				user.setLastName(lastName);
 				user.setDepartment(departmentId);
 				user.setId(userId);
-
+				user.setUserName(userName);
+				user.setPassword(password);
 				user.setRole(role);
 				user.setDepartmentName(departmentName);
 				System.out.println("user from DB: " + user);
@@ -179,7 +182,7 @@ public class UserDao {
 			
 			
 			String query = "UPDATE user_detail SET first_name ='" + emp.getFirstName() + "', last_name= '"	+ emp.getLastName() + "',"
-					+ "department='"+emp.getDepartmentId()+"'"
+					+ "department_id='"+emp.getDepartmentId()+"'"
 					+ " where id ='" + emp.getId() + "'";
 			System.out.println(query);
 
@@ -208,7 +211,7 @@ public class UserDao {
 		try {
 			Connection connection = DatabaseConnection.getConnection();
 			
-			String query = "SELECT ul.id as user_id, ud.first_name, ud.last_name, ul.user_name, d.department_name, d.department_id, ul.role\r\n"
+			String query = "SELECT ul.id as user_id, ud.first_name, ud.last_name, ul.user_name, ul.password, d.department_name, d.department_id, ul.role\r\n"
 					+ "  FROM user_detail ud JOIN user_login ul ON ud.user_id = ul.id\r\n"
 					+ "LEFT OUTER JOIN department d ON ud.department_id = d.department_id\r\n" + " where ul.is_deleted = 0 AND ud.user_id ='" + UserId + "'";
 

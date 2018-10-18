@@ -139,11 +139,6 @@ input {
 	margin: .4rem;
 }
 
-label {
-	display: inline-block;
-	text-align: right;
-	width: 20%;
-}
 
 .welcome{
 	color: black;
@@ -172,17 +167,18 @@ pageContext.setAttribute("leaves", leaves);
 <body style="background-color:#eaefeac7;">
 <span class="welcome"><b>Welcome, ${loggedInUser.firstName}</b></span>
 
-<form method="post" action="<%=request.getContextPath() %>/apply-leave">
+
 
 <div class="container" style="margin-top:50px;">
 		<ul class="nav nav-tabs">
 			<li class="active" style="margin-left:5px;"><a data-toggle="tab" href="#leaveHistory" >My Leaves</a></li>
 			<li  style="margin-left:5px;"><a data-toggle="tab" href="#applyLeave">Apply for Leave</a></li>
+			<li  style="margin-left:5px;"><a data-toggle="tab" href="#myprofile">My Profile</a></li>
 			<li style="float:right; margin-right: -115px;"><a href="logout-servlet">Logout</a></li>
 		</ul>
   <div class="tab-content">
     <div id="applyLeave" class="tab-pane fade">
-     
+     <form method="post" action="<%=request.getContextPath() %>/apply-leave">
       <table>
 				<br/><br/>
 					<tr>
@@ -203,6 +199,7 @@ pageContext.setAttribute("leaves", leaves);
 					<tr><td>Description</td> <td><textarea name="reason" style="width:350px; height:115px;" ></textarea></td></tr>
 					<tr><td><button style="background-color: blue;" type="submit" name="submit">Apply For leave</button></td></tr>
       </table>  
+      </form>
     </div>
    
 
@@ -245,9 +242,12 @@ pageContext.setAttribute("leaves", leaves);
   </table>
 </div>
     </div>
+   
+    <div id="myprofile" class="tab-pane fade ">
+			    <jsp:include page="edit-user.jsp"></jsp:include> 
+	 	</div>
     </div>
 </div>
-</form>
 </body>
 
 </html>

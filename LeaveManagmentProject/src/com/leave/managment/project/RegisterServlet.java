@@ -52,7 +52,7 @@ public class RegisterServlet extends HttpServlet {
 		user.setRole(Roles.STAFF);
 
 		// out.println("parameters of user pojo: "+user);
-
+System.out.println("user to update:"+user);
 		UserDao userDao = new UserDao();
 
 		if (id != null && id.length() != 0) {

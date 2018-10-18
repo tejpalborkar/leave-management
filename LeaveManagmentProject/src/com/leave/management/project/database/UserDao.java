@@ -176,15 +176,24 @@ public class UserDao {
 		System.out.println("Executing update User");
 		try {
 			Connection connection = DatabaseConnection.getConnection();
-			String query = "UPDATE user_details SET first_name ='" + emp.getFirstName() + "', last_name= '"
-					+ emp.getLastName() + "',user_name ='" + emp.getUserName() + "',password='" + emp.getPassword()
-					+ "' where id ='" + emp.getId() + "'";
+			
+			
+			String query = "UPDATE user_details SET first_name ='" + emp.getFirstName() + "', last_name= '"	+ emp.getLastName() + "'"
+					+ "department='"+emp.getDepartmentId()+"',"
+					+ " where id ='" + emp.getId() + "'";
 			System.out.println(query);
 
 			Statement stmt = connection.createStatement();
 			int rowsAffected = stmt.executeUpdate(query);
 
 			System.out.println("Rows inserted: " + rowsAffected);
+
+			query = "UPDATE user_login SET user_name ='" + emp.getUserName() + "', password= '" + emp.getPassword()	+ "'";
+			System.out.println(query);
+
+			stmt = connection.createStatement();
+			rowsAffected = stmt.executeUpdate(query);
+
 			return rowsAffected;
 		} catch (Exception e) {
 			e.printStackTrace();

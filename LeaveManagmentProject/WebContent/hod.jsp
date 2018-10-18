@@ -1,4 +1,3 @@
-
 <%@page import="com.leave.managment.usermodel.LeaveStatus"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <%@page import="com.leave.managment.usermodel.Leave"%>
@@ -12,6 +11,7 @@
 <head>
 <link rel="stylesheet"
 	href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+
 
 <!-- jQuery library -->
 <script
@@ -52,87 +52,131 @@ pageContext.setAttribute("approvedAndRejected", approvedAndRejected);
 			<li class="active" style="margin-left:5px;"><a data-toggle="tab" href="#applyLeave">Leave
 					Requests</a></li>
 			<li  style="margin-left:5px;"><a data-toggle="tab" href="#leaveHistory">History</a></li>
+			<li  style="margin-left:5px;"><a data-toggle="tab" href="#myprofile">My Profile</a></li>
 			<li style="float:right;margin-right: -115px;"><a  href="logout-servlet">Logout</a></li>
 		</ul>
 
-		<div class="tab-content">
-    <div id="applyLeave" class="tab-pane fade in active">
-	<table class="table">
-	    <thead>
-	      <tr>
-	      <th>Sr. No</th>
-	     	<th>Applicant</th>
-	        <th>Leave From</th>
-	        <th>Leave To</th>
-	        <th>Applied on</th>
-	        <th>Reason</th>
-	        <th>Status</th>
-	        <th>Action</th>
-	      </tr>
-	    </thead>
-	    <tbody>
-	         
-      
-      <c:forEach var="leave" items="${newLeaves}" varStatus="id">
-			<tr>
-			<td>${id.count}</td>
-			<td>${leave.applicantName}</td>
-				<td>${leave.fromDate}</td>
-				<td>${leave.toDate}</td>
-				<td>${leave.appliedDate}</td>
-				<td>${leave.reason}</td>
-				<td>${leave.status}</td>
-				<td   class="col-xs-3">
-				<a style="width:90px; padding:0px;" class="btn btn-primary" role="button" href="<%=application.getContextPath()%>/leave-action?action=approve&leaveId=${leave.leaveId}">Approve</a>
-				<a style="width:90px; padding:0px;" class="btn btn-danger" role="button"href="<%=application.getContextPath()%>/leave-action?action=reject&leaveId=${leave.leaveId}">Reject</a>
-			</td>
-			</tr>
-			<p>
-	</c:forEach>
-      
-      
-    </tbody>
-  </table>
-    </div>
+	<div class="tab-content">
+   		 <div id="applyLeave" class="tab-pane fade in active">
+		<table class="table">
+		    <thead>
+		      <tr>
+		      <th>Sr. No</th>
+		     	<th>Applicant</th>
+		        <th>Leave From</th>
+		        <th>Leave To</th>
+		        <th>Applied on</th>
+		        <th>Reason</th>
+		        <th>Status</th>
+		        <th>Action</th>
+		      </tr>
+		    </thead>
+		    <tbody>
+	      
+	      <c:forEach var="leave" items="${newLeaves}" varStatus="id">
+				<tr>
+				<td>${id.count}</td>
+				<td>${leave.applicantName}</td>
+					<td>${leave.fromDate}</td>
+					<td>${leave.toDate}</td>
+					<td>${leave.appliedDate}</td>
+					<td>${leave.reason}</td>
+					<td>${leave.status}</td>
+					<td   class="col-xs-3">
+					<a style="width:90px; padding:0px;" class="btn btn-primary" role="button" href="<%=application.getContextPath()%>/leave-action?action=approve&leaveId=${leave.leaveId}">Approve</a>
+					<a style="width:90px; padding:0px;" class="btn btn-danger" role="button"href="<%=application.getContextPath()%>/leave-action?action=reject&leaveId=${leave.leaveId}">Reject</a>
+				</td>
+				</tr>
+				<p>
+		</c:forEach>
+	      
+	      
+	    </tbody>
+	  </table>
+ </div>
    
-
-    <div id="leaveHistory" class="tab-pane fade ">
+   		 <div id="leaveHistory" class="tab-pane fade ">
      <div class="container">
   
-  <table class="table">
-    <thead>
-      <tr>
-      <th>Sr. No</th>
-      <th>Applicant</th>
-        <th>Leave From</th>
-        <th>Leave To</th>
-        <th>Applied on</th>
-        <th>Reason</th>
-        <th>Status</th>
-      </tr>
-    </thead>
-    <tbody>
-         
-      
-      <c:forEach var="leave" items="${approvedAndRejected}" varStatus="id">
-			<tr>
-			<td>${id.count}</td>
-			<td>${leave.applicantName}</td>
-				<td>${leave.fromDate}</td>
-				<td>${leave.toDate}</td>
-				<td>${leave.appliedDate}</td>
-				<td>${leave.reason}</td>
-				<td>${leave.status}</td>
-				
-			</tr>
-			<p>
-	</c:forEach>
-      
-      
-    </tbody>
-  </table>
-</div>
+		  <table class="table">
+		    <thead>
+		      <tr>
+		      <th>Sr. No</th>
+		      <th>Applicant</th>
+		        <th>Leave From</th>
+		        <th>Leave To</th>
+		        <th>Applied on</th>
+		        <th>Reason</th>
+		        <th>Status</th>
+		      </tr>
+		    </thead>
+		    <tbody>
+		         
+		      
+		      <c:forEach var="leave" items="${approvedAndRejected}" varStatus="id">
+					<tr>
+					<td>${id.count}</td>
+					<td>${leave.applicantName}</td>
+						<td>${leave.fromDate}</td>
+						<td>${leave.toDate}</td>
+						<td>${leave.appliedDate}</td>
+						<td>${leave.reason}</td>
+						<td>${leave.status}</td>
+						
+					</tr>
+					<p>
+			</c:forEach>
+		      
+		      
+		    </tbody>
+		  </table>
+		</div>
     </div>
+   
+	    <div id="myprofile" class="tab-pane fade ">
+			 <form method="post" action="/LeaveManagmentProject/register-servlet">
+			 <input  type="hidden" value ="${loggedInUser.id}"  />
+				<div style="margin: 10px;">
+					<div class="row">
+			 			<label class="col-xs-2">First Name </label>
+			 			<input   type="text"  value="${loggedInUser.firstName}" name="firstName"required />
+					</div>
+
+					<div class="row" style="text-align:left;">
+						<label class="col-xs-2">Last Name </label>
+						<input  class="col-xs-2" type="text" value ="${loggedInUser.lastName}"  name="lastName"required />
+					</div>
+
+					<div class="row">
+						<label class="col-xs-2">Department</label>
+						<select class="col-xs-2" name = "department" value="${loggedInUser.department}" id = "department" >
+								<option  value="0">Select Department</option>
+								<option id="departmentId2" value="2">Electronics And Telecom</option>
+								<option id="departmentI3" value="3">Computer</option>
+								<option id="departmentId4" value="4">IT</option>
+						</select>
+					</div>
+					
+					<div class="row">
+						<label class="col-xs-2">User name </label>
+						 <input class="col-xs-2" type="text" value="${loggedInUser.userName}" name="userName" required disabled="disabled"/>
+					</div>
+					
+					<div class="row">
+						<label class="col-xs-2">Password </label>
+						 <input class="col-xs-2" type="password" value="${loggedInUser.password}" disabled="disabled" name="password" required />
+					</div>
+					
+					
+					<div class="row">
+						<span  class="col-xs-2"></span>
+						<button class="col-xs-2"  type="submit">Update</button>
+					</div>
+				</div>
+			</form>
+			     
+	 	</div>
+   
     </div>
 </div>
 </body>
@@ -227,6 +271,7 @@ background-color:black;
 
 label {
 	display: block;
+	text-align:left;
 }
 
 input {
@@ -253,12 +298,6 @@ input {
 	margin: .4rem;
 }
 
-label {
-	display: inline-block;
-	text-align: right;
-	width: 20%;
-}
-
 .welcome{
 	color: black;
 	text-align: right;
@@ -269,5 +308,14 @@ label {
 	margin-right: 95px;
 }
 </style>
+
+<script>
+
+        $( document ).ready(function() {
+	
+                $("#departmentId${loggedInUser.departmentId}").prop('selected', true);
+                
+        });        
+        </script>
 
 </html>

@@ -55,8 +55,9 @@ public class LoginServlet extends HttpServlet {
 			String employeeOriginalPassword = user.getPassword();
 
 			if (employeeOriginalPassword.equals(password)) {
-
 				user = userDao.getUserDetailsByUserId(user.getId());
+				user.setUserName(userName);
+				user.setPassword(employeeOriginalPassword);
 				HttpSession session1 = request.getSession();
 				session1.setAttribute("loggedInUser", user);
 

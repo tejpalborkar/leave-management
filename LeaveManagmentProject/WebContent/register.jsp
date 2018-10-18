@@ -125,9 +125,9 @@ span.psw {
 					 	
 					<select name = "department" id = "department" >
 							<option value="0">Select Department</option>
-							<option value="1">Electronics And Telecom</option>
-							<option value="2">Computer</option>
-							<option value="3">It</option>
+							<option value="2">Electronics And Telecom</option>
+							<option value="3">Computer</option>
+							<option value="4">It</option>
 					</select>
 					 <input type="text"placeholder="Enter Username" name="userName" required />
 					 <input type="password" placeholder="Enter Password" name="password" required />

@@ -178,7 +178,7 @@ public class UserDao {
 			Connection connection = DatabaseConnection.getConnection();
 			
 			
-			String query = "UPDATE user_details SET first_name ='" + emp.getFirstName() + "', last_name= '"	+ emp.getLastName() + "',"
+			String query = "UPDATE user_detail SET first_name ='" + emp.getFirstName() + "', last_name= '"	+ emp.getLastName() + "',"
 					+ "department='"+emp.getDepartmentId()+"'"
 					+ " where id ='" + emp.getId() + "'";
 			System.out.println(query);

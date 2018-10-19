@@ -6,16 +6,16 @@
 			 			<input   type="text"  value="${loggedInUser.firstName}" name="firstName"required />
 					</div>
 
-					<div class="row" style="text-align:left;">
+					<div class="row" >
 						<label class="col-xs-2">Last Name </label>
-						<input  class="col-xs-2" type="text" value ="${loggedInUser.lastName}"  name="lastName"required />
+						<input   type="text" value ="${loggedInUser.lastName}"  name="lastName"required />
 					</div>
 
 					<div class="row">
 						<label class="col-xs-2">Department</label>
 						<select class="col-xs-2" name = "department" value="${loggedInUser.department}" id = "department" >
 								<option  value="0">Select Department</option>
-								<option id="departmentId2" value="2">Electronics And Telecom</option>
+								<option id="departmentId2" value="2">E & TC</option>
 								<option id="departmentI3" value="3">Computer</option>
 								<option id="departmentId4" value="4">IT</option>
 						</select>

@@ -16,7 +16,7 @@
 						<select class="col-xs-2" name = "department" value="${loggedInUser.department}" id = "department" >
 								<option  value="0">Select Department</option>
 								<option id="departmentId2" value="2">E & TC</option>
-								<option id="departmentI3" value="3">Computer</option>
+								<option id="departmentId3" value="3">Computer</option>
 								<option id="departmentId4" value="4">IT</option>
 						</select>
 					</div>
@@ -43,7 +43,7 @@
 			
 <script>
 	$(document).ready(function() {
-
+console.log('#departmentId${loggedInUser.departmentId}')
 		$("#departmentId${loggedInUser.departmentId}").prop('selected', true);
 
 	});

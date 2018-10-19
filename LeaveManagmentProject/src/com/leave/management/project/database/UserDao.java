@@ -183,7 +183,7 @@ public class UserDao {
 			
 			String query = "UPDATE user_detail SET first_name ='" + emp.getFirstName() + "', last_name= '"	+ emp.getLastName() + "',"
 					+ "department_id='"+emp.getDepartmentId()+"'"
-					+ " where id ='" + emp.getId() + "'";
+					+ " where user_id ='" + emp.getId() + "'";
 			System.out.println(query);
 
 			Statement stmt = connection.createStatement();

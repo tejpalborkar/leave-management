@@ -1,3 +1,4 @@
+<%@page import="com.leave.management.project.database.UserDao"%>
 <%@page import="com.leave.managment.usermodel.LeaveStatus"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <%@page import="com.leave.managment.usermodel.Leave"%>
@@ -21,24 +22,61 @@
 	src="<%=request.getContextPath()%>/resources/js/bootstrap.min.js"></script>
 <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
 <title>Leave Management System</title>
+<style type="text/css">
+.welcome{
+	color: black;
+	text-align: right;
+	padding: 14px 16px;
+	text-decoration: none;
+	float:right;
+	direction:rtl;
+	margin-right: 95px;
+}
 
+</style>
 
+<script>
+	$(document).ready(function() {
+		$("#departmentId${loggedInUser.departmentId}").prop('selected', true);
+		
+		if ('${isSearch}') {
+			$("#leaveRequestsTab").removeClass('active');
+		}
+		
+		
+		
+	});
+</script>
 <center><h2>Leave management system</h2></center>
 </head>
 
 
 <%
-
-LeaveDao leaveDao = new LeaveDao();
-User user =(User)session.getAttribute("loggedInUser");
-List<Leave> leaves = leaveDao.getLeavesByUserId(user.getId());
-
-pageContext.setAttribute("leaves", leaves);
-
-List<Leave> newLeaves = leaveDao.getLeavesByStatusAndHodUser(user.getId(), LeaveStatus.NEW);
-pageContext.setAttribute("newLeaves", newLeaves);
-List<Leave> approvedAndRejected = leaveDao.getApprovedAndRejectedAndHodUser(user.getId());
-pageContext.setAttribute("approvedAndRejected", approvedAndRejected);
+		
+		LeaveDao leaveDao = new LeaveDao();
+		User user =(User)session.getAttribute("loggedInUser");
+		List<Leave> leaves = leaveDao.getLeavesByUserId(user.getId());
+		pageContext.setAttribute("leaves", leaves);
+		
+		
+		List<Leave> newLeaves = leaveDao.getLeavesByStatusAndHodUser(user.getId(), LeaveStatus.NEW);
+		pageContext.setAttribute("newLeaves", newLeaves);
+		List<Leave> approvedAndRejected = leaveDao.getApprovedAndRejectedAndHodUser(user.getId());
+		pageContext.setAttribute("approvedAndRejected", approvedAndRejected);
+		
+		
+		UserDao userDao = new UserDao();
+		List<User> userList = userDao.getUsersByHod(user.getId());
+		pageContext.setAttribute("users", userList);
+		
+		String leaveFrom = request.getParameter("leaveFrom");
+		String leaveTo = request.getParameter("leaveTo");
+		
+		if(leaveFrom !=null && leaveTo!=null){
+			List<Leave>	searchedLeaevs = leaveDao.searchLeaves(leaveFrom,leaveTo,user.getId());
+			pageContext.setAttribute("searchedLeaves", searchedLeaevs);
+			pageContext.setAttribute("isSearch", true);
+		}
 
 %>
 
@@ -46,91 +84,163 @@ pageContext.setAttribute("approvedAndRejected", approvedAndRejected);
 
 	<span class="welcome">Welcome,${loggedInUser.firstName}</span>
 	<div class="container" style="margin-top:50px;">
-		<ul class="nav nav-tabs">
-			<li class="active" style="margin-left:5px;"><a data-toggle="tab" href="#applyLeave">Leave
+		<ul class="nav nav-tabs" id ="myTab">
+			<li id="leaveRequestsTab" class="active" style="margin-left:5px;"><a data-toggle="tab" href="#applyLeave">Leave
 					Requests</a></li>
 			<li  style="margin-left:5px;"><a data-toggle="tab" href="#leaveHistory">History</a></li>
+			<li id="searchLeavesTab"  style="margin-left:5px;"><a data-toggle="tab" href="#searchLeaves">Search Leaves</a></li>
+			<li  style="margin-left:5px;"><a data-toggle="tab" href="#users">Staffs</a></li>
 			<li  style="margin-left:5px;"><a data-toggle="tab" href="#myprofile">My Profile</a></li>
 			<li style="float:right;margin-right: -115px;"><a  href="logout-servlet">Logout</a></li>
 		</ul>
+		
 
 	<div class="tab-content">
    		 <div id="applyLeave" class="tab-pane fade in active">
-		<table class="table">
-		    <thead>
-		      <tr>
-		      <th>Sr. No</th>
-		     	<th>Applicant</th>
-		        <th>Leave From</th>
-		        <th>Leave To</th>
-		        <th>Applied on</th>
-		        <th>Reason</th>
-		        <th>Status</th>
-		        <th>Action</th>
-		      </tr>
-		    </thead>
-		    <tbody>
-	      
-	      <c:forEach var="leave" items="${newLeaves}" varStatus="id">
-				<tr>
-				<td>${id.count}</td>
-				<td>${leave.applicantName}</td>
-					<td>${leave.fromDate}</td>
-					<td>${leave.toDate}</td>
-					<td>${leave.appliedDate}</td>
-					<td>${leave.reason}</td>
-					<td>${leave.status}</td>
-					<td   class="col-xs-3">
-					<a style="width:90px; padding:0px;" class="btn btn-primary" role="button" href="<%=application.getContextPath()%>/leave-action?action=approve&leaveId=${leave.leaveId}">Approve</a>
-					<a style="width:90px; padding:0px;" class="btn btn-danger" role="button"href="<%=application.getContextPath()%>/leave-action?action=reject&leaveId=${leave.leaveId}">Reject</a>
-				</td>
-				</tr>
-				<p>
-		</c:forEach>
-	      
-	      
-	    </tbody>
-	  </table>
- </div>
+				<table class="table">
+				    <thead>
+				      <tr>
+				      <th>Sr. No</th>
+				     	<th>Applicant</th>
+				        <th>Leave From</th>
+				        <th>Leave To</th>
+				        <th>Applied on</th>
+				        <th>Reason</th>
+				        <th>Status</th>
+				        <th>Action</th>
+				      </tr>
+				    </thead>
+				    <tbody>
+			      
+			      <c:forEach var="leave" items="${newLeaves}" varStatus="id">
+						<tr>
+						<td>${id.count}</td>
+						<td>${leave.applicantName}</td>
+							<td>${leave.fromDate}</td>
+							<td>${leave.toDate}</td>
+							<td>${leave.appliedDate}</td>
+							<td>${leave.reason}</td>
+							<td>${leave.status}</td>
+							<td   class="col-xs-3">
+							<a style="width:90px; padding:0px;" class="btn btn-primary" role="button" href="<%=application.getContextPath()%>/leave-action?action=approve&leaveId=${leave.leaveId}">Approve</a>
+							<a style="width:90px; padding:0px;" class="btn btn-danger" role="button"href="<%=application.getContextPath()%>/leave-action?action=reject&leaveId=${leave.leaveId}">Reject</a>
+						</td>
+						</tr>
+						<p>
+				</c:forEach>
+			      
+			      
+			    </tbody>
+			  </table>
+ 		</div>
    
-   		 <div id="leaveHistory" class="tab-pane fade ">
-     <div class="container">
-  
-		  <table class="table">
-		    <thead>
-		      <tr>
-		      <th>Sr. No</th>
-		      <th>Applicant</th>
-		        <th>Leave From</th>
-		        <th>Leave To</th>
-		        <th>Applied on</th>
-		        <th>Reason</th>
-		        <th>Status</th>
-		      </tr>
-		    </thead>
-		    <tbody>
-		         
-		      
-		      <c:forEach var="leave" items="${approvedAndRejected}" varStatus="id">
-					<tr>
-					<td>${id.count}</td>
-					<td>${leave.applicantName}</td>
-						<td>${leave.fromDate}</td>
-						<td>${leave.toDate}</td>
-						<td>${leave.appliedDate}</td>
-						<td>${leave.reason}</td>
-						<td>${leave.status}</td>
-						
-					</tr>
-					<p>
-			</c:forEach>
-		      
-		      
-		    </tbody>
-		  </table>
-		</div>
-    </div>
-   
+   		<div id="leaveHistory" class="tab-pane fade ">
+				  <table class="table">
+				    <thead>
+				      <tr>
+				      <th>Sr. No</th>
+				      <th>Applicant</th>
+				        <th>Leave From</th>
+				        <th>Leave To</th>
+				        <th>Applied on</th>
+				        <th>Reason</th>
+				        <th>Status</th>
+				      </tr>
+				    </thead>
+				    <tbody>
+				         
+				      
+				      <c:forEach var="leave" items="${approvedAndRejected}" varStatus="id">
+							<tr>
+							<td>${id.count}</td>
+							<td>${leave.applicantName}</td>
+								<td>${leave.fromDate}</td>
+								<td>${leave.toDate}</td>
+								<td>${leave.appliedDate}</td>
+								<td>${leave.reason}</td>
+								<td>${leave.status}</td>
+								
+							</tr>
+							<p>
+					</c:forEach>
+				      
+				    </tbody>
+				  </table>
+    	</div>
+    	
+    	<div id="searchLeaves" class="tab-pane fade ">
+				   <div>  
+					   <form action="<%=application.getContextPath()%>/hod.jsp">
+						   	From Date<input type="date" name="leaveFrom" id="leaveFrom" style="width:350px; ">
+							To Date<input type="date" name="leaveTo" id="leaveTo" style="width:350px; ">
+						    <button type="submit" class="btn-sm" style="width=:10%!">Search</button>
+						</form>
+				    </div>
+				  <table class="table" style="word-wrap: break-word;">
+				    <thead>
+				      <tr>
+				      <th>Sr. No</th>
+				      <th>Applicant</th>
+				        <th>Leave From</th>
+				        <th>Leave To</th>
+				        <th>Applied on</th>
+				        <th>Reason</th>
+				        <th>Status</th>
+				      </tr>
+				    </thead>
+				    <tbody>
+				         
+				      
+				      <c:forEach var="leave" items="${searchedLeaves}" varStatus="id">
+							<tr>
+							<td>${id.count}</td>
+							<td>${leave.applicantName}</td>
+								<td>${leave.fromDate}</td>
+								<td>${leave.toDate}</td>
+								<td style="word-wrap: break-word;">${leave.appliedDate}</td>
+								<td style="word-wrap: break-word;">${leave.reason}</td>
+								<td>${leave.status}</td>
+								
+							</tr>
+							<p>
+					</c:forEach>
+				      
+				    </tbody>
+				  </table>
+    	</div>
+    	
+   		<div id="users" class="tab-pane fade ">
+			   <table class="table">
+				    <thead class="thead-dark">
+				      <tr>
+				      <th>Sr. No</th>
+				     	<th>Name</th>
+				        <th>Department</th>
+				        <th>Role</th>
+<!-- 				        <th >Action</th> -->
+				      </tr>
+				    </thead>
+				    <tbody>
+				         
+			      
+			      <c:forEach var="user" items="${users}" varStatus="id">
+						<tr>
+							<td>${id.count}</td>
+							<td>${user.firstName} ${user.lastName}</td>
+							<td>${user.departmentName}</td>
+							<td>${user.role}</td>
+							<%-- <td  class="col-xs-3">
+								<a style="width:52px; padding:0px;" class="btn btn-danger" role="button" href="<%=application.getContextPath()%>/delete-user?userId=${user.id}">Delete</a>
+								<a class="btn btn-primary" role="button" style="width:125px; padding:0px;" href="<%=application.getContextPath()%>/promote-hod?userId=${user.id}&departmentId=${user.departmentId}">Promote as Hod</a>
+							</td> --%>
+						</tr>
+						<p>
+				</c:forEach>
+			      
+			      
+			    </tbody>
+	 		 </table>
+    	</div>
 	    <div id="myprofile" class="tab-pane fade ">
 			    <jsp:include page="edit-user.jsp"></jsp:include> 
 	 	</div>
@@ -184,9 +294,8 @@ button {
 	margin: 8px 0;
 	border: none;
 	cursor: pointer;
-	width: 100%;
+	width: 10%;
 }
-
 
 
 li a {
@@ -256,22 +365,29 @@ input {
 	margin: .4rem;
 }
 
-.welcome{
-	color: black;
-	text-align: right;
-	padding: 14px 16px;
-	text-decoration: none;
-	float:right;
-	direction:rtl;
-	margin-right: 95px;
-}
+
 </style>
 
 <script>
 	$(document).ready(function() {
-
 		$("#departmentId${loggedInUser.departmentId}").prop('selected', true);
-
+		
+		if ('${isSearch}') {
+			$("#leaveRequestsTab").removeClass('active');
+			var activeTab = localStorage.getItem('activeTab');
+			if(activeTab){
+				$('#myTab a[href="' + activeTab + '"]').tab('show');
+			}
+			
+			$("#leaveFrom").val('${param.leaveFrom}');
+			$("#leaveTo").val('${param.leaveTo}');
+// 			alert('${param.leaveTo}');
+		}
+		
+		$('a[data-toggle="tab"]').on('show.bs.tab', function(e) {
+			localStorage.setItem('activeTab', $(e.target).attr('href'));
+		});
+		
 	});
 </script>
 

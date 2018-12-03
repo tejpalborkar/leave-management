@@ -134,6 +134,31 @@ public class LeaveDao {
 		}
 		return leaves;
 	}
+	public List<Leave> searchLeaves(String leaveFrom, String leaveTo,Integer hodUserId) {
+		System.out.println("Executing searchLeaves for fromDate: "+leaveFrom+" To Date: "+leaveTo );
+		List<Leave> leaves = Collections.emptyList();
+		try {
+
+			Connection connection = DatabaseConnection.getConnection();
+			String sqlQuery = "SELECT l.*, ud.first_name, ud.last_name FROM leaves l JOIN user_detail ud ON l.user_id = ud.user_id where hod_user_id ='"
+					+ hodUserId + "' AND from_date >='" + leaveFrom + "' AND to_date <='" + leaveTo
+					+ "' ORDER by from_date desc";
+			System.out.println(sqlQuery);
+			Statement statement = connection.createStatement();
+
+			ResultSet resultset = statement.executeQuery(sqlQuery);
+
+			leaves = iterateResultSet(resultset);
+			for (Leave leave : leaves) {
+				System.out.println(leave);
+			}
+			return leaves;
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		System.out.println("Executed searchLeaves");
+		return leaves;
+	}
 
 	public List<Leave> getApprovedAndRejectedAndHodUser(Integer hodUserId) {
 		System.out.println("Executing getApprovedAndRejectedAndHodUser");

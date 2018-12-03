@@ -95,6 +95,7 @@ public class UserDao {
 		return null;
 	}
 
+//	
 	public List<User> getAllusers() {
 		System.out.println("Executing get All users");
 		List<User> users = Collections.emptyList();
@@ -115,6 +116,32 @@ public class UserDao {
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
+		return users;
+	}
+	
+	public List<User> getUsersByHod(Integer hodUserId) {
+		System.out.println("Executing getUsersByHod");
+		List<User> users = Collections.emptyList();
+		try {
+
+			Connection connection = DatabaseConnection.getConnection();
+			String sqlQuery = "SELECT ul.id as user_id, ud.first_name, ud.last_name, ul.user_name, ul.password, d.department_name, d.department_id, ul.role\r\n"
+					+ "  FROM user_detail ud JOIN user_login ul ON ud.user_id = ul.id\r\n"
+					+ "JOIN department d ON ud.department_id = d.department_id\r\n" + " where d.hod_user_id = '"+hodUserId+"' AND ud.is_deleted = 0";
+
+			Statement statement = connection.createStatement();
+			System.out.println(sqlQuery);
+
+			ResultSet resultset = statement.executeQuery(sqlQuery);
+
+			users = iterateResultSet(resultset);
+
+			return users;
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		
+		System.out.println("Executed getUsersByHod");
 		return users;
 	}
 

@@ -125,9 +125,11 @@ span.psw {
 					 	
 					<select name = "department" id = "department" >
 							<option value="0">Select Department</option>
-							<option value="2">Electronics And Telecom</option>
-							<option value="3">Computer</option>
-							<option value="4">It</option>
+							<option id="departmentId2" value="2">Computer</option>
+							<option id="departmentId3" value="3">Civil</option>
+							<option id="departmentId4" value="4">Mechanical</option>
+							<option id="departmentId5" value="5">IT</option>
+							<option id="departmentId6" value="6">E&TC</option>
 					</select>
 					 <input type="text"placeholder="Enter Username" name="userName" required />
 					 <input type="password" placeholder="Enter Password" name="password" required />
@@ -135,7 +137,8 @@ span.psw {
 
 					<button type="submit">Register</button>
 
-					<button style="background-color: blue;">Already Registered?</button>
+					<button style="background-color: blue;" onclick="window.location.href='login.jsp'">Already Registered?</button>
+				
 				</div>
 
 			</div>
